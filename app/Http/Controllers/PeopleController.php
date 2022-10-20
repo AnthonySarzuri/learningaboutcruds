@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\People;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PeopleController extends Controller
 {
@@ -12,11 +13,16 @@ class PeopleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //pagina inicio
-        $datos=People::orderBy('apPat','desc')->paginate(3);
-        return view ('index', compact('datos'));
+        $busqueda=trim($request->get('busqueda'));
+        $datos=DB::table('people')
+                ->where('apPat','LIKE','%'.$busqueda.'%')
+                ->orwhere('nombre','LIKE','%'.$busqueda.'%')
+                ->orderBy('apPat','asc')
+                ->paginate(10);
+        return view ('index', compact('datos','busqueda'));
     }
 
     /**

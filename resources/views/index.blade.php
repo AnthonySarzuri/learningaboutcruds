@@ -7,7 +7,23 @@
 <div class="card text-center">
   <div class="card-header">
     CRUD
+    <form action="{{route('people.index')}}" method="GET">
+        <div class="form-row">
+            <div class="col-sm-4 my-1">
+                <input type="text" class="form-control" name="busqueda" value="{{$busqueda}}">
+            </div>
+            <div class="col-sm-4 my-1">
+                <input type="submit" class="btn btn-primary" value="Buscar">
+            </div>
+        </div>
+    </form>
+
+    {{-- <form class="form-inline my-2 my-lg-0" action="{{route('people.index')}}" method="GET">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" value="{{$busqueda}}">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form> --}}
   </div>
+  
   <div class="card-body">
     <div class="row">
         <div class="col-sm-12">
@@ -39,6 +55,10 @@
                     <th>Delete</th>
                 </thead>
                 <tbody>
+                @if (count($datos)<=0)
+                    <tr>
+                        <td colspan="6">No pudimos encontrar a quien buscas</td>
+                    </tr>
                 @foreach ($datos as $item)   
                     <tr>
                         <td>{{$item->apPat}}</td>
@@ -61,6 +81,8 @@
                         </td>
                     </tr>
                 @endforeach
+                
+                @endif
                 </tbody>
             </table>
             <hr>
